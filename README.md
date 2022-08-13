@@ -2,24 +2,35 @@
 WolfDispatcher - tiny Telegram bot framework
 
 
-# Usage example
+# Quick start
 
 ```
-    <?php
-     
     require_once('api.wolfgram.php');
     require_once('api.wolfdispatcher.php');
-     
+
+```
+
+# Your first bot
+
+```
     class OurBot extends WolfDispatcher {
-     
+        protected function actionHello() {
+           $this->reply('Hello!');
+        }
     }
-     
-     
+
+    $commands=array(
+       'hi'=>'actionHello'
+    );
+
+
     $bot = new OurBot('YOUR_BOT_TOKEN');
+    $bot->setActions($commands);
     $bot->hookAutosetup(true);
     $bot->listen();
 
 ```
+
 
 ## Please check out some usage guidelines
 
