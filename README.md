@@ -41,3 +41,8 @@ require_once('api.wolfdispatcher.php');
 # Just working bot demo
 
 [instafiltersdemo.webm](https://user-images.githubusercontent.com/1496954/184504316-59350e09-b1df-4699-b7b6-6e0d370794d8.webm)
+
+# Few live bots using WolfDispatcher
+
+  * [@DeTryvogaBot - aerial alerts in Ukraine notifications](https://t.me/DeTryvogaBot)
+  * [@dushavolkabot - memes generation and few specific services](https://t.me/dushavolkabot) 
