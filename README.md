@@ -27,7 +27,7 @@ require_once('api.wolfdispatcher.php');
 
     $bot = new OurBot('YOUR_BOT_TOKEN');
     $bot->setActions($commands);
-    $bot->hookAutosetup(true);
+    $bot->hookAutosetup();
     $bot->listen();
 
 ```
