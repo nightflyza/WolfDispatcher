@@ -35,7 +35,9 @@ require_once('api.wolfdispatcher.php');
 
 # Please check out some usage guidelines
 
-  * [Full class documentation](http://wiki.ubilling.net.ua/doku.php?id=wolfdispatcher) in Ukrainian
+  * [Full WolfDispatcher class documentation](http://wiki.ubilling.net.ua/doku.php?id=wolfdispatcher) in Ukrainian
+  * [YALF Framework includes WolfDispatcher](http://yalf.nightfly.biz/)
+
 
 # Just working bot demo
 
