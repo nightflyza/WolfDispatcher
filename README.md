@@ -5,8 +5,8 @@ WolfDispatcher - tiny Telegram bot framework
 # Quick start
 
 ```
-    require_once('api.wolfgram.php');
-    require_once('api.wolfdispatcher.php');
+require_once('api.wolfgram.php');
+require_once('api.wolfdispatcher.php');
 
 ```
 
@@ -22,7 +22,6 @@ WolfDispatcher - tiny Telegram bot framework
     $commands=array(
        'hi'=>'actionHello'
     );
-
 
     $bot = new OurBot('YOUR_BOT_TOKEN');
     $bot->setActions($commands);
