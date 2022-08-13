@@ -1,6 +1,5 @@
 # WolfDispatcher
-WolfDispatcher - tiny Telegram bot framework
-
+WolfDispatcher is an incredibly simple, minimalistic and fast layer of abstraction over the Telegram API that will allow you to develop your interactive Telegram bots with any functionality at an incredible speed, without thinking about the low-level things they will do. Also, maximum attention was paid to the standardization of data formats with which you can work in the process of implementing your bot and the ease of deploying it to production. With the help of WolfDispatcher, you can implement your bot functionality as a portable on-premise solution based on the YALF framework or  also, you can use just two tiny libraries to left alone with your great code and awesome ideas.
 
 # Quick start
 
