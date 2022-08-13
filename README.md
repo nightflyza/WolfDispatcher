@@ -23,4 +23,8 @@ WolfDispatcher - tiny Telegram bot framework
 
 ## Please check out some usage guidelines
 
-  * [Full Documentation](http://wiki.ubilling.net.ua/doku.php?id=wolfdispatcher)
+  * [Full class documentation](http://wiki.ubilling.net.ua/doku.php?id=wolfdispatcher)
+
+## Just bot demo
+
+[instafiltersdemo.webm](https://user-images.githubusercontent.com/1496954/184504316-59350e09-b1df-4699-b7b6-6e0d370794d8.webm)
