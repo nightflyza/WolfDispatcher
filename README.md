@@ -46,3 +46,4 @@ require_once('api.wolfdispatcher.php');
 
   * [@DeTryvogaBot - aerial alerts in Ukraine notifications](https://t.me/DeTryvogaBot)
   * [@dushavolkabot - memes generation and few specific services](https://t.me/dushavolkabot) 
+  * [@TlenifyBot - makes all pictures sad and depressing](https://t.me/TlenifyBot)
