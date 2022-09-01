@@ -3,7 +3,7 @@
 /**
  * Tiny Telegram bot API implementation for standalone projects
  */
-class UbillingTelegram {
+class WolfGram {
 
     /**
      * Contains current instance bot token
