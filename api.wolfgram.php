@@ -76,7 +76,7 @@ class WolfGram {
                 $result['markup'] = $keyboardMarkup;
             }
         }
-        return($result);
+        return ($result);
     }
 
     /**
@@ -125,7 +125,7 @@ class WolfGram {
                 $result = $this->apiSendMessage($chatid, $message, $keyboard, $replyToMsgId);
             }
         }
-        return($result);
+        return ($result);
     }
 
     /**
@@ -278,7 +278,7 @@ class WolfGram {
         } else {
             throw new Exception('EX_TOKEN_EMPTY');
         }
-        return($result);
+        return ($result);
     }
 
     /**
@@ -321,7 +321,7 @@ class WolfGram {
         } else {
             throw new Exception('EX_TOKEN_EMPTY');
         }
-        return($result);
+        return ($result);
     }
 
     /**
@@ -342,7 +342,7 @@ class WolfGram {
             curl_close($ch);
         }
 
-        return($result);
+        return ($result);
     }
 
     /**
@@ -354,7 +354,7 @@ class WolfGram {
      */
     public function getChatInfo($chatId) {
         $result = array();
-        if (!empty($this->botToken) AND ( !empty($chatId))) {
+        if (!empty($this->botToken) and (!empty($chatId))) {
             $method = 'getChat';
             $url = $this->apiUrl . $this->botToken . '/' . $method . '?chat_id=' . $chatId;
             $ch = curl_init();
@@ -369,7 +369,7 @@ class WolfGram {
             }
         }
 
-        return($result);
+        return ($result);
     }
 
     /**
@@ -402,7 +402,7 @@ class WolfGram {
                 }
             }
         }
-        return($result);
+        return ($result);
     }
 
     /**
@@ -424,7 +424,7 @@ class WolfGram {
             $result = curl_exec($ch);
             curl_close($ch);
         }
-        return($result);
+        return ($result);
     }
 
     /**
@@ -459,7 +459,7 @@ class WolfGram {
         @$result['photo'] = $messageData['photo'];
         @$result['document'] = $messageData['document'];
         //photos and documents have only caption
-        if (!empty($result['photo']) OR ! empty($result['document'])) {
+        if (!empty($result['photo']) or ! empty($result['document'])) {
             @$result['text'] = $messageData['caption'];
         }
         @$result['voice'] = $messageData['voice'];
@@ -476,7 +476,7 @@ class WolfGram {
         }
 
 
-        return($result);
+        return ($result);
     }
 
     /**
@@ -507,9 +507,40 @@ class WolfGram {
             }
         }
 
-        return($result);
+        return ($result);
     }
 
+    /**
+     * Sends an action to a chat using the Telegram API.
+     *
+     * @param string $chatid The ID of the chat.
+     * @param string $action The action to be sent. Like "typing".
+     *
+     * @return string The result of the API request.
+     * @throws Exception If the bot token is empty.
+     */
+    public function apiSendAction($chatid, $action) {
+        $result = '';
+        $method = 'sendChatAction';
+        $data['chat_id'] = $chatid;
+        $data['action'] = $action;
+        $data_json = json_encode($data);
+
+        if (!empty($this->botToken)) {
+            $url = $this->apiUrl . $this->botToken . '/' . $method;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
+           $result = curl_exec($ch);
+            curl_close($ch);
+        } else {
+            throw new Exception('EX_TOKEN_EMPTY');
+        }
+        return ($result);
+    }
 }
 
 /**
@@ -526,12 +557,11 @@ if (!function_exists('ispos')) {
      */
     function ispos($string, $search) {
         if (strpos($string, $search) === false) {
-            return(false);
+            return (false);
         } else {
-            return(true);
+            return (true);
         }
     }
-
 }
 
 if (!function_exists('curdatetime')) {
@@ -543,9 +573,8 @@ if (!function_exists('curdatetime')) {
      */
     function curdatetime() {
         $currenttime = date("Y-m-d H:i:s");
-        return($currenttime);
+        return ($currenttime);
     }
-
 }
 
 if (!function_exists('__')) {
@@ -563,9 +592,8 @@ if (!function_exists('__')) {
                 $str = $lang['def'][$str];
             }
         }
-        return($str);
+        return ($str);
     }
-
 }
 
 $starttime = explode(' ', microtime());
