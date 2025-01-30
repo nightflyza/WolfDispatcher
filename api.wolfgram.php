@@ -319,10 +319,11 @@ class WolfGram {
      * 
      * @param string $webHookUrl HTTPS url to send updates to. Use an empty string to remove webhook integration
      * @param int $maxConnections Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40.
-     * 
+     * @param array $allowedUpdates Array of updates types allowed for that hook. Example:  array('update_id', 'message', 'chat_member', 'message_reaction')
+     *                              some of this types https://core.telegram.org/bots/api#update or leave this empty in most cases
      * @return string
      */
-    public function setWebHook($webHookUrl, $maxConnections = 40) {
+    public function setWebHook($webHookUrl, $maxConnections = 40, $allowedUpdates = array()) {
         $result = '';
         if (!empty($this->botToken)) {
             $data = array();
@@ -331,6 +332,9 @@ class WolfGram {
                 if (ispos($webHookUrl, 'https://')) {
                     $data['url'] = $webHookUrl;
                     $data['max_connections'] = $maxConnections;
+                    if (!empty($allowedUpdates)) {
+                        $data['allowed_updates'] = $allowedUpdates;
+                    }
                 } else {
                     throw new Exception('EX_NOT_SSL_URL');
                 }
@@ -510,7 +514,7 @@ class WolfGram {
         if ($result['reply_to_message']) {
             $result['reply_to_message'] = $this->preprocessMessageData($result['reply_to_message']);
         }
-        
+
         //Uncomment following for total debug
         //@$result['rawMessageData'] = $messageData;
 
