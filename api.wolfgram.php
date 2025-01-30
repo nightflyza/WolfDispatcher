@@ -515,7 +515,7 @@ class WolfGram {
             $result['reply_to_message'] = $this->preprocessMessageData($result['reply_to_message']);
         }
 
-        //Uncomment following for total debug
+        //Uncomment following line for total debug
         //@$result['rawMessageData'] = $messageData;
 
         return ($result);
@@ -542,6 +542,11 @@ class WolfGram {
                 } else {
                     if (isset($postRaw['channel_post'])) {
                         $result = $this->preprocessMessageData($postRaw['channel_post'], true);
+                    } else {
+                        //other object like chat_member or message_reaction etc
+                        if (is_array($postRaw) and !empty($postRaw)) {
+                            $result = $postRaw;
+                        }
                     }
                 }
             } else {
