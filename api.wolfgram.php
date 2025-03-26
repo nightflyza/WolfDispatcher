@@ -493,6 +493,7 @@ class WolfGram {
         $result['date'] = $messageData['date'];
         $result['chat']['type'] = $messageData['chat']['type'];
         @$result['text'] = $messageData['text'];
+        @$result['contact'] = $messageData['contact'];
         @$result['photo'] = $messageData['photo'];
         @$result['document'] = $messageData['document'];
         //photos and documents have only caption
