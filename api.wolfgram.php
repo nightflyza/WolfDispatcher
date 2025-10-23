@@ -229,6 +229,66 @@ class WolfGram {
             $method = 'sendPhoto' . $photoParams;
         }
 
+        // video sending (mp4, mov, gif)
+        if (ispos($message, 'sendVideo:')) {
+            if (preg_match('!\[(.*?)\]!si', $message, $tmpVideo)) {
+                $cleanVideo = $tmpVideo[1];
+            }
+
+            if (preg_match('!\{(.*?)\}!si', $message, $tmpCaption)) {
+                $cleanCaption = urlencode($tmpCaption[1]);
+            }
+
+            $videoParams = '?chat_id=' . $chatid . '&video=' . $cleanVideo;
+            if (!empty($cleanCaption)) {
+                $videoParams .= '&caption=' . $cleanCaption;
+            }
+            if ($replyToMsgId) {
+                $videoParams .= '&reply_to_message_id=' . $replyToMsgId;
+            }
+            $method = 'sendVideo' . $videoParams;
+        }
+
+        // audio sending (mp3, m4a, ogg)
+        if (ispos($message, 'sendAudio:')) {
+            if (preg_match('!\[(.*?)\]!si', $message, $tmpAudio)) {
+                $cleanAudio = $tmpAudio[1];
+            }
+
+            if (preg_match('!\{(.*?)\}!si', $message, $tmpCaption)) {
+                $cleanCaption = urlencode($tmpCaption[1]);
+            }
+
+            $audioParams = '?chat_id=' . $chatid . '&audio=' . $cleanAudio;
+            if (!empty($cleanCaption)) {
+                $audioParams .= '&caption=' . $cleanCaption;
+            }
+            if ($replyToMsgId) {
+                $audioParams .= '&reply_to_message_id=' . $replyToMsgId;
+            }
+            $method = 'sendAudio' . $audioParams;
+        }
+
+        // document sending (any random file)
+        if (ispos($message, 'sendDocument:')) {
+            if (preg_match('!\[(.*?)\]!si', $message, $tmpDoc)) {
+                $cleanDoc = $tmpDoc[1];
+            }
+
+            if (preg_match('!\{(.*?)\}!si', $message, $tmpCaption)) {
+                $cleanCaption = urlencode($tmpCaption[1]);
+            }
+
+            $docParams = '?chat_id=' . $chatid . '&document=' . $cleanDoc;
+            if (!empty($cleanCaption)) {
+                $docParams .= '&caption=' . $cleanCaption;
+            }
+            if ($replyToMsgId) {
+                $docParams .= '&reply_to_message_id=' . $replyToMsgId;
+            }
+            $method = 'sendDocument' . $docParams;
+        }
+
         //sending keyboard
         if (!empty($keyboard)) {
             if (isset($keyboard['type'])) {
@@ -291,6 +351,55 @@ class WolfGram {
                 $removeChatId = $cleanRemoveString[1];
                 $removeParams = '?chat_id=' . $removeChatId . '&message_id=' . $removeMessageId;
                 $method = 'deleteMessage' . $removeParams;
+            }
+        }
+
+        //editing message by its id
+        if (ispos($message, 'editMessageText:')) {
+            if (preg_match('!\[(.*?)\]!si', $message, $tmpEditString)) {
+                $cleanEditString = explode('@', $tmpEditString[1]);
+                $editMessageId = $cleanEditString[0];
+                $editChatId = $cleanEditString[1];
+                $newMessageText = str_replace('editMessageText:[' . $editMessageId . '@' . $editChatId . ']', '', $message);
+                $editParams = '?chat_id=' . $editChatId . '&message_id=' . $editMessageId . '&text=' . urlencode($newMessageText);
+                $method = 'editMessageText' . $editParams;
+            }
+        }
+
+        // pinning message by its id
+        if (ispos($message, 'pinChatMessage:')) {
+            if (preg_match('!\[(.*?)\]!si', $message, $tmpPinString)) {
+                $parts = explode('@', $tmpPinString[1]);
+                // format: [messageId@chatId] or [messageId@chatId@disable]
+                $pinMessageId = isset($parts[0]) ? $parts[0] : null;
+                $pinChatId = isset($parts[1]) ? $parts[1] : null;
+                $disableNotification = (isset($parts[2]) and ($parts[2] == '1' or strtolower($parts[2]) === 'true')) ? '&disable_notification=true' : '';
+                if ($pinMessageId and $pinChatId) {
+                    $pinParams = '?chat_id=' . $pinChatId . '&message_id=' . $pinMessageId . $disableNotification;
+                    $method = 'pinChatMessage' . $pinParams;
+                }
+            }
+        }
+
+        // unpinning message (single) or all messages (when only chatId provided)
+        // accepted formats:
+        //  - [messageId@chatId]  -> unpin specific message
+        //  - [@chatId] or [chatId] -> unpin all messages in chat
+        if (ispos($message, 'unpinChatMessage:')) {
+            if (preg_match('!\[(.*?)\]!si', $message, $tmpUnpinString)) {
+                $raw = $tmpUnpinString[1];
+                // allow formats "messageId@chatId" or just "chatId"
+                $parts = explode('@', $raw);
+                if (count($parts) == 1) {
+                    $unpinChatId = $parts[0];
+                    $unpinParams = '?chat_id=' . $unpinChatId;
+                    $method = 'unpinAllChatMessages' . $unpinParams;
+                } else {
+                    $unpinMessageId = $parts[0];
+                    $unpinChatId = $parts[1];
+                    $unpinParams = '?chat_id=' . $unpinChatId . '&message_id=' . $unpinMessageId;
+                    $method = 'unpinChatMessage' . $unpinParams;
+                }
             }
         }
 
@@ -587,6 +696,41 @@ class WolfGram {
             curl_close($ch);
         } else {
             throw new Exception('EX_TOKEN_EMPTY');
+        }
+        return ($result);
+    }
+
+
+    /**
+     * Answers a callback query
+     * 
+     * @param string $callbackQueryId The ID of the callback query.
+     * @param string $text The text of the answer.
+     * @param bool $showAlert Whether to show an alert to the user.
+     * 
+     * @return string The result of the API request.
+     */
+    public function answerCallbackQuery($callbackQueryId, $text = '', $showAlert = false) {
+        $result = '';
+        $method = 'answerCallbackQuery';
+        $data['callback_query_id'] = $callbackQueryId;
+        if (!empty($text)) {
+            $data['text'] = $text;
+        }
+        if ($showAlert) {
+            $data['show_alert'] = true;
+        }
+
+        if (!empty($this->botToken)) {
+            $url = $this->apiUrl . $this->botToken . '/' . $method;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            $result = curl_exec($ch);
+            curl_close($ch);
         }
         return ($result);
     }
