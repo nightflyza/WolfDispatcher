@@ -150,7 +150,7 @@ Tip: emoji on buttons looks nice and reduces accidental matches on random chat t
 ## 📖 Please check out some usage guidelines
 
 * [Full WolfDispatcher class documentation](http://wiki.ubilling.net.ua/doku.php?id=wolfdispatcher) in Ukrainian
-* [YALF Framework includes WolfDispatcher](http://yalf.nightfly.biz/)
+* [YALF Framework includes WolfDispatcher](http://yalf.nightfly.in.ua/)
 * Packagist: [wolfdispatcher/wolfdispatcher](https://packagist.org/packages/wolfdispatcher/wolfdispatcher)
 
 ## 🎬 Just working bot demo
