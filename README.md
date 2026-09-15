@@ -131,7 +131,7 @@ $bot->hookAutosetup();
 $bot->listen();
 ```
 
-Tip: emoji on buttons looks nice and reduces accidental matches on random chat text. For a flat list of labels, use `$this->rearrangeButtons($buttons, 2)` before `castKeyboard()`.
+Tip: emoji on buttons looks nice and reduces accidental matches on random chat text.
 
 ## ✨ Features
 
