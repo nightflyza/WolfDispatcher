@@ -150,6 +150,8 @@ Tip: emoji on buttons looks nice and reduces accidental matches on random chat t
 ## 📖 Please check out some usage guidelines
 
 * [Full WolfDispatcher class documentation](http://wiki.ubilling.net.ua/doku.php?id=wolfdispatcher) in Ukrainian
+* [Creating a Telegram bot and getting a token with BotFather](https://wiki.ubilling.net.ua/doku.php?id=tgbotfather) in Ukrainian
+* [phpDox API reference for WolfDispatcher](https://ubilling.net.ua/api_doc/classes/WolfDispatcher.xhtml)
 * [YALF Framework includes WolfDispatcher](http://yalf.nightfly.in.ua/)
 * Packagist: [wolfdispatcher/wolfdispatcher](https://packagist.org/packages/wolfdispatcher/wolfdispatcher)
 
