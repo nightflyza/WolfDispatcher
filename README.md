@@ -93,11 +93,9 @@ $bot->hookAutosetup();
 $bot->listen();
 ```
 
-Replace `YOUR_BOT_TOKEN` with the token from [@BotFather](https://t.me/BotFather). Send `hi` to the bot - it should reply `Hello!`.
-
 ## ⌨️ A bit more
 
-Keyboard buttons are just text. Map them the same way as commands — `/start` shows the menu, a tap runs the matching action:
+Keyboard buttons are just text. Map them the same way as commands - `/start` shows the menu, a tap runs the matching action:
 
 ```php
 <?php
