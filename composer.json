@@ -1,0 +1,38 @@
+{
+    "name": "wolfdispatcher/wolfdispatcher",
+    "description": "Minimalistic Telegram bot dispatcher for interactive bots",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/nightflyza/WolfDispatcher",
+    "keywords": [
+        "telegram",
+        "telegram-bot",
+        "telegram-bot-api",
+        "bot",
+        "webhook",
+        "dispatcher",
+        "chatbot",
+        "php-library",
+        "minimalistic"
+    ],
+    "require": {
+        "php": ">=5.3.28",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*"
+    },
+    "autoload": {
+        "files": [
+            "api.wolfgram.php",
+            "api.wolfdispatcher.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Rostyslav Haitkulov",
+            "email": "info@ubilling.net.ua",
+            "homepage": "https://nightfly.in.ua"
+        }
+    ],
+    "minimum-stability": "stable"
+}
