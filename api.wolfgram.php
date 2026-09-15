@@ -45,6 +45,40 @@ class WolfGram {
     }
 
     /**
+     * Performs HTTP request to Telegram API using curl
+     * 
+     * @param string $url
+     * @param array $data
+     * @param bool $isPost
+     * 
+     * @return string
+     */
+    protected function makeCurlRequest($url, $data = array(), $isPost = true) {
+        $result = '';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+
+        if ($isPost) {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            if (!empty($data)) {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            }
+        }
+
+        $result = curl_exec($ch);
+
+        //PHP 8.0+ has no need to close curl resource anymore
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($ch); // Deprecated in PHP 8.5
+        }
+
+        return ($result);
+    }
+
+    /**
      * Preprocess keyboard for sending with directPushMessage
      * 
      * @param array $buttonsArray
@@ -404,19 +438,9 @@ class WolfGram {
         }
 
 
-        //POST data encoding
-        $data_json = json_encode($data);
-
         if (!empty($this->botToken)) {
             $url = $this->apiUrl . $this->botToken . '/' . $method;
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
-            $result = curl_exec($ch);
-            curl_close($ch);
+            $result = $this->makeCurlRequest($url, $data, true);
         } else {
             throw new Exception('EX_TOKEN_EMPTY');
         }
@@ -452,18 +476,7 @@ class WolfGram {
             }
 
             $url = $this->apiUrl . $this->botToken . '/' . $method;
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            curl_setopt($ch, CURLOPT_POST, 1);
-            if (!empty($data)) {
-                $data_json = json_encode($data);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
-            }
-
-            $result = curl_exec($ch);
-            curl_close($ch);
+            $result = $this->makeCurlRequest($url, $data, true);
         } else {
             throw new Exception('EX_TOKEN_EMPTY');
         }
@@ -480,12 +493,7 @@ class WolfGram {
         if (!empty($this->botToken)) {
             $method = 'getWebhookInfo';
             $url = $this->apiUrl . $this->botToken . '/' . $method;
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            $result = curl_exec($ch);
-            curl_close($ch);
+            $result = $this->makeCurlRequest($url, array(), false);
         }
 
         return ($result);
@@ -503,15 +511,10 @@ class WolfGram {
         if (!empty($this->botToken) and (!empty($chatId))) {
             $method = 'getChat';
             $url = $this->apiUrl . $this->botToken . '/' . $method . '?chat_id=' . $chatId;
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            $result = curl_exec($ch);
-            curl_close($ch);
+            $reply = $this->makeCurlRequest($url, array(), false);
 
-            if (!empty($result)) {
-                $result = json_decode($result, true);
+            if (!empty($reply)) {
+                $result = json_decode($reply, true);
             }
         }
 
@@ -530,15 +533,10 @@ class WolfGram {
         if (!empty($this->botToken)) {
             $method = 'getFile';
             $url = $this->apiUrl . $this->botToken . '/' . $method . '?file_id=' . $fileId;
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            $result = curl_exec($ch);
-            curl_close($ch);
+            $reply = $this->makeCurlRequest($url, array(), false);
 
-            if (!empty($result)) {
-                $result = json_decode($result, true);
+            if (!empty($reply)) {
+                $result = json_decode($reply, true);
                 if (@$result['ok']) {
                     //we got it!
                     $result = $result['result']['file_path'];
@@ -563,12 +561,7 @@ class WolfGram {
         if (!empty($this->botToken)) {
             $cleanApiUrl = str_replace('bot', '', $this->apiUrl);
             $url = $cleanApiUrl . 'file/bot' . $this->botToken . '/' . $filePath;
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            $result = curl_exec($ch);
-            curl_close($ch);
+            $result = $this->makeCurlRequest($url, array(), false);
         }
         return ($result);
     }
@@ -682,18 +675,10 @@ class WolfGram {
         $method = 'sendChatAction';
         $data['chat_id'] = $chatid;
         $data['action'] = $action;
-        $data_json = json_encode($data);
 
         if (!empty($this->botToken)) {
             $url = $this->apiUrl . $this->botToken . '/' . $method;
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
-            $result = curl_exec($ch);
-            curl_close($ch);
+            $result = $this->makeCurlRequest($url, $data, true);
         } else {
             throw new Exception('EX_TOKEN_EMPTY');
         }
@@ -723,14 +708,7 @@ class WolfGram {
 
         if (!empty($this->botToken)) {
             $url = $this->apiUrl . $this->botToken . '/' . $method;
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-            $result = curl_exec($ch);
-            curl_close($ch);
+            $result = $this->makeCurlRequest($url, $data, true);
         }
         return ($result);
     }
