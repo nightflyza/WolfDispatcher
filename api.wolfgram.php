@@ -502,7 +502,7 @@ class WolfGram {
     /**
      * Returns chat data array by its chatId
      * 
-     * @param int chatId
+     * @param int $chatId
      * 
      * @return array
      */

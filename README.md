@@ -143,19 +143,14 @@ Tip: emoji on buttons looks nice and reduces accidental matches on random chat t
 * Message edit / delete, pin / unpin, ban / unban
 * Webhook autosetup (`hookAutosetup`) with optional debug logging
 * Tiny footprint: `WolfDispatcher` + `WolfGram`, no heavy dependencies
-* Works standalone, via Composer, or inside YALF / Ubilling (`UbillingTelegram` when available)
 
 ## 📖 Please check out some usage guidelines
 
-* [Full WolfDispatcher class documentation](http://wiki.ubilling.net.ua/doku.php?id=wolfdispatcher) in Ukrainian
+* [Complete WolfDispatcher class guide](http://wiki.ubilling.net.ua/doku.php?id=wolfdispatcher) in Ukrainian
 * [Creating a Telegram bot and getting a token with BotFather](https://wiki.ubilling.net.ua/doku.php?id=tgbotfather) in Ukrainian
 * [phpDox API reference for WolfDispatcher](https://ubilling.net.ua/api_doc/classes/WolfDispatcher.xhtml)
 * [YALF Framework includes WolfDispatcher](http://yalf.nightfly.in.ua/)
 * Packagist: [wolfdispatcher/wolfdispatcher](https://packagist.org/packages/wolfdispatcher/wolfdispatcher)
-
-## 🎬 Just working bot demo
-
-[instafiltersdemo.webm](https://user-images.githubusercontent.com/1496954/184504316-59350e09-b1df-4699-b7b6-6e0d370794d8.webm)
 
 ## 🌟 Few live bots using WolfDispatcher
 
