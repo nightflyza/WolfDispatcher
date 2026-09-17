@@ -137,7 +137,7 @@ class WolfGram {
      * @param int $chatid remote chatId
      * @param string $message text message to send
      * @param array $keyboard keyboard encoded with makeKeyboard method
-     * @param bool $nosplit dont automatically split message into 4096 slices
+     * @param bool $noSplit dont automatically split message into 4096 slices
      * @param int $replyToMsgId optional message ID which is reply for
      * 
      * @return string/bool
